@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Controle de Despesas</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <main class="container">
+        <h1>Controle de Despesas</h1>
+
+        <form id="expenseForm" class="card">
+            <div class="row">
+                <label>Descrição</label>
+                <input id="description" type="text" placeholder="Ex: Conta de luz" required />
+            </div>
+
+            <div class="row">
+                <label>Valor (R$)</label>
+                <input id="amount" type="number" step="0.01" min="0" placeholder="0.00" required />
+            </div>
+
+            <div class="row">
+                <label>Data</label>
+                <input id="date" type="date" />
+            </div>
+
+            <div class="actions">
+                <button type="submit" id="saveBtn">Cadastrar Despesa</button>
+                <button type="button" id="cancelEditBtn" style="display:none">Cancelar</button>
+            </div>
+        </form>
+
+        <section class="card">
+            <h2>Despesas</h2>
+            <div id="total" class="total">Total: R$ 0,00</div>
+            <ul id="expenseList" class="list"></ul>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
