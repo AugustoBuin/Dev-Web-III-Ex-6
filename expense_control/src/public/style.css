@@ -2,6 +2,7 @@
     --bg: #f4f7fb;
     --card: #fff;
     --accent: #2b4eff;
+    --savebtn: #28a745;
     --danger: #dc3545;
     --muted: #666;
 }
@@ -61,6 +62,16 @@ h1 {
     display: flex;
     gap: 8px;
     justify-content: flex-end;
+}
+
+.saveButton {
+    background: var(--savebtn);
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
 }
 
 button {
