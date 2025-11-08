@@ -2,12 +2,12 @@
   "name": "expense_control",
   "version": "1.0.0",
   "description": "Controle de despesas - TypeScript + Node + Express + MongoDB (Mongoose)",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
-    "lint": "eslint . --ext .ts,.js"
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "Augusto Henrique Buin",

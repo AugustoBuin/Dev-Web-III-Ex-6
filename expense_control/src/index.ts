@@ -1,33 +1,51 @@
+import 'dotenv/config';
 import express from "express";
-import path from "path";
+import mongoose from "mongoose";
 import cors from "cors";
-import dotenv from "dotenv";
-import expenseRoutes from "./routes/expenseRoutes";
-import { connectDB } from "./db";
+import path from "path";
+import router from './routes/expenseRoutes';
 
-dotenv.config();
+import dns from "dns";
+dns.setDefaultResultOrder("ipv4first");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Conectar ao MongoDB
-connectDB();
-
-// Servir frontend estático
-app.use(express.static(path.join(__dirname, "..", "public")));
-
-// Rotas da API prefixed com /api/expenses
-app.use("/api/expenses", expenseRoutes);
-
-// Rota root (serve index)
+// servir o front simples (estático)
+app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (_req, res) => {
-    res.sendFile(path.join(__dirname, "..", "public", "index.html"));
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
+// rota de saúde (opcional)
+app.get("/health", (_req, res) => {
+    const state = mongoose.connection.readyState; // 1=connected, 2=connecting
+    res.json({ ok: true, mongoState: state });
 });
+
+// *** CONEXÃO COM ATLAS ***
+async function bootstrap() {
+    const uri = process.env.MONGODB_URI;
+    if (!uri) {
+        console.error("Faltou MONGODB_URI no .env");
+        return; // não derruba o processo
+    }
+
+    // Log sanitizado (sem credenciais), só pra validar que o .env foi lido
+    console.log("Conectando em:", uri.replace(/\/\/.*@/, "//***:***@"));
+
+    // conectar ao MongoDB Atlas
+    await mongoose.connect(uri, {
+        dbName: "dweb3",
+        serverSelectionTimeoutMS: 15000
+    });
+
+    console.log("MongoDB Atlas conectado");
+    app.use("/api/expenses", router);
+    app.listen(3000, () => console.log("Servidor: http://localhost:3000"));
+}
+
+
+bootstrap();
